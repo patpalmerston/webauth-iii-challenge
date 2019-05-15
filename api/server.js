@@ -1,8 +1,13 @@
 const express = require('express');
+const configureMiddleware = require('../data/config/middleware');
+
+
 
 
 
 const server = express();
+
+configureMiddleware(server);
 
 
 server.get('/', (req, res, next) => {
