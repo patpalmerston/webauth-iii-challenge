@@ -2,9 +2,9 @@ const router = require('express').Router();
 const db = require('./users-model');
 
 const restricted = require('../auth/restricted-middleware');
-const checkDepartment = require('../auth/check-department-middleware');
+// const checkDepartment = require('../auth/check-department-middleware');
 
-router.get('/', restricted, checkDepartment('department'), (req, res) => {
+router.get('/', restricted, (req, res) => {
   db.find()
     .then(users => {
       res.json(users);
@@ -12,7 +12,7 @@ router.get('/', restricted, checkDepartment('department'), (req, res) => {
     .catch(err => res.send(err))
 });
 
-router.get('/:id', restricted, checkDepartment('department'), (req, res) => {
+router.get('/:id', restricted, (req, res) => {
   db.findById(req.params.id)
     .then(user => {
       res.json(user);
@@ -21,3 +21,5 @@ router.get('/:id', restricted, checkDepartment('department'), (req, res) => {
 })
 
 module.exports = router;
+// restricted,
+// checkDepartment('department'), 

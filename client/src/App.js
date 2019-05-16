@@ -1,26 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, NavLink, withRouter } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+import './App.css';
+import Login from './login/Login';
+import Users from './users/Users';
+import Register from './register/Register'
+
+class App extends React.Component { //turned to class for logout functionality but no state needed
+  
+  render() {
+    return(
+      <>
+      
+      <header>
+        <nav>
+          <NavLink to="/register">Register</NavLink>
+          &nbsp; | &nbsp;
+          <NavLink to="/login">Login</NavLink>
+          &nbsp; | &nbsp;
+          <NavLink to="/users">Users</NavLink>
+          &nbsp; | &nbsp;
+          <button onClick={this.logout}>Logout</button>
+        </nav>
       </header>
-    </div>
-  );
+
+      <main>
+        <Route path="/register" component={Register} />
+        <Route path="/login" component={Login} />
+        <Route path="/users" component={Users} />
+      </main>
+    
+      </>
+    )
+  }
+
+  logout = () => {
+    localStorage.removeItem('jwt');
+
+    this.props.history.push('/login');
+  }
 }
 
-export default App;
+export default withRouter(App);
