@@ -3,7 +3,7 @@ const configureMiddleware = require('../data/config/middleware');
 
 
 const authRouter = require('.././data/auth/auth-router');
-const usersRouter = require('../data/users/users-router');
+const usersRouter = require('.././data/users/users-router');
 
 
 const server = express();

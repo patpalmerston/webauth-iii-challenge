@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const secrets = require('../config/secrets');
+
+const tokenService = require('./token-service');
 
 const db = require('../users/users-model');
 
@@ -27,9 +27,12 @@ router.post('/login', (req, res) => {
     .first()
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
-        const token = generateToken(user);
+        const token = tokenService.generateToken(user);
         
-        res.status(200).json({ message: `welcome ${user.username}!, have a token..`, token,
+        res.status(200).json({ 
+          message: `welcome ${user.username}!, have a token..`, 
+          token,
+          department: token.department,
        });
       } else {
         res.status(401).json({ message: 'Invalid Credentials log in' })
@@ -54,21 +57,5 @@ router.post('/login', (req, res) => {
 //   }
 // })
 
-//function to generate token
-function generateToken(user) {
-  const payload = {
-    subject: user.id,
-    username: user.username,
-    department: user.department // not nullable?
-    // this is where we hard coded data for the student role
-    //example
-    //roles: ['Student'],
-  }
-
-  const options = {
-    expiresIn: '1d',
-  }
-  return jwt.sign(payload, secrets.jwtSecret, options);
-}
 
 module.exports = router;
